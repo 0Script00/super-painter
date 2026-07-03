@@ -11,34 +11,90 @@
       <header class="app-header">
         <div>
           <p class="app-label">super painter</p>
-          <p class="app-desc">간단한 라이트 모드 페인팅 툴입니다.</p>
+          <p class="app-desc">라이트 모드 + 투명 캔버스 + HSB 색상 도구</p>
         </div>
-        <button class="clear-button" id="clearButton">지우기</button>
+        <button class="clear-button" id="clearButton">전체 지우기</button>
       </header>
 
       <section class="controls">
         <div class="control-group">
-          <span class="control-title">색상</span>
-          <div class="palette" id="colorPalette">
-            <button class="color-swatch selected" data-color="#1e88e5" style="background:#1e88e5"></button>
-            <button class="color-swatch" data-color="#1976d2" style="background:#1976d2"></button>
-            <button class="color-swatch" data-color="#4dabf5" style="background:#4dabf5"></button>
-            <button class="color-swatch" data-color="#0d47a1" style="background:#0d47a1"></button>
-            <button class="color-swatch" data-color="#333333" style="background:#333"></button>
+          <span class="control-title">도구</span>
+          <div class="tool-group" id="toolGroup">
+            <button class="tool-button selected" type="button" data-tool="brush">브러시</button>
+            <button class="tool-button" type="button" data-tool="line">직선</button>
+            <button class="tool-button" type="button" data-tool="eraser">지우개</button>
           </div>
         </div>
 
         <div class="control-group">
-          <span class="control-title">브러시 크기</span>
+          <span class="control-title">색상</span>
+          <div class="palette" id="colorPalette">
+            <button class="color-swatch selected" type="button" data-color="#1e88e5" style="background:#1e88e5"></button>
+            <button class="color-swatch" type="button" data-color="#1976d2" style="background:#1976d2"></button>
+            <button class="color-swatch" type="button" data-color="#4dabf5" style="background:#4dabf5"></button>
+            <button class="color-swatch" type="button" data-color="#0d47a1" style="background:#0d47a1"></button>
+            <button class="color-swatch" type="button" data-color="#0b0f2f" style="background:#0b0f2f"></button>
+            <button class="color-swatch" type="button" data-color="#d32f2f" style="background:#d32f2f"></button>
+            <button class="color-swatch" type="button" data-color="#f59e0b" style="background:#f59e0b"></button>
+          </div>
+          <div class="hsb-grid">
+            <div class="hsb-row">
+              <label for="hue">H</label>
+              <input id="hue" type="range" min="0" max="360" value="210" />
+              <span id="hueValue">210</span>
+            </div>
+            <div class="hsb-row">
+              <label for="saturation">S</label>
+              <input id="saturation" type="range" min="0" max="100" value="79" />
+              <span id="saturationValue">79%</span>
+            </div>
+            <div class="hsb-row">
+              <label for="brightness">B</label>
+              <input id="brightness" type="range" min="0" max="100" value="54" />
+              <span id="brightnessValue">54%</span>
+            </div>
+            <div class="hsb-row">
+              <label for="opacity">A</label>
+              <input id="opacity" type="range" min="0" max="100" value="100" />
+              <span id="opacityValue">100%</span>
+            </div>
+          </div>
+          <div class="color-preview">
+            <span>현재 색</span>
+            <div id="colorPreview" class="preview-swatch"></div>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <span class="control-title">브러시 / 캔버스</span>
           <div class="slider-wrap">
-            <input id="brushSize" type="range" min="1" max="24" value="8" />
-            <span id="brushSizeValue">8</span>
+            <label>
+              두께
+              <input id="brushSize" type="range" min="1" max="48" value="8" />
+            </label>
+            <div class="value-line">
+              <span>크기</span>
+              <strong id="brushSizeValue">8</strong>
+            </div>
+          </div>
+          <div class="canvas-size-row">
+            <label>
+              너비
+              <input id="canvasWidth" type="number" min="320" max="1600" value="900" />
+            </label>
+            <label>
+              높이
+              <input id="canvasHeight" type="number" min="240" max="1200" value="540" />
+            </label>
+            <button id="resizeButton" type="button">크기 적용</button>
           </div>
         </div>
       </section>
 
       <section class="canvas-panel">
-        <canvas id="paintCanvas" width="900" height="540"></canvas>
+        <div class="canvas-wrapper">
+          <canvas id="paintCanvas" width="900" height="540"></canvas>
+        </div>
       </section>
     </main>
 
