@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>super painter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="app-label">super painter</p>
+          <p class="app-desc">간단한 라이트 모드 페인팅 툴입니다.</p>
+        </div>
+        <button class="clear-button" id="clearButton">지우기</button>
+      </header>
+
+      <section class="controls">
+        <div class="control-group">
+          <span class="control-title">색상</span>
+          <div class="palette" id="colorPalette">
+            <button class="color-swatch selected" data-color="#1e88e5" style="background:#1e88e5"></button>
+            <button class="color-swatch" data-color="#1976d2" style="background:#1976d2"></button>
+            <button class="color-swatch" data-color="#4dabf5" style="background:#4dabf5"></button>
+            <button class="color-swatch" data-color="#0d47a1" style="background:#0d47a1"></button>
+            <button class="color-swatch" data-color="#333333" style="background:#333"></button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <span class="control-title">브러시 크기</span>
+          <div class="slider-wrap">
+            <input id="brushSize" type="range" min="1" max="24" value="8" />
+            <span id="brushSizeValue">8</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="canvas-panel">
+        <canvas id="paintCanvas" width="900" height="540"></canvas>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
