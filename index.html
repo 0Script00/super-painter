@@ -18,15 +18,6 @@
 
       <section class="controls">
         <div class="control-group">
-          <span class="control-title">도구</span>
-          <div class="tool-group" id="toolGroup">
-            <button class="tool-button selected" type="button" data-tool="brush">브러시</button>
-            <button class="tool-button" type="button" data-tool="line">직선</button>
-            <button class="tool-button" type="button" data-tool="eraser">지우개</button>
-          </div>
-        </div>
-
-        <div class="control-group">
           <span class="control-title">색상</span>
           <div class="palette" id="colorPalette">
             <button class="color-swatch selected" type="button" data-color="#1e88e5" style="background:#1e88e5"></button>
@@ -92,6 +83,13 @@
       </section>
 
       <section class="canvas-panel">
+        <div class="canvas-tools">
+          <div class="tool-list" id="toolGroup">
+            <button class="tool-button selected" type="button" data-tool="brush">브러시</button>
+            <button class="tool-button" type="button" data-tool="line">직선</button>
+            <button class="tool-button" type="button" data-tool="eraser">지우개</button>
+          </div>
+        </div>
         <div class="canvas-wrapper">
           <canvas id="paintCanvas" width="900" height="540"></canvas>
         </div>
