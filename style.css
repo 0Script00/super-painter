@@ -280,11 +280,12 @@ input {
 
 .canvas-wrapper {
   background-color: #ffffff;
-  background-image:
-    linear-gradient(90deg, #d1d5db 50%, transparent 50%),
-    linear-gradient(90deg, transparent 50%, #d1d5db 50%);
-  background-size: 24px 24px;
-  background-position: 0 0, 12px 12px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #d1d5db 0 1px,
+    transparent 1px 24px
+  );
+  background-size: 24px 100%;
   padding: 16px;
 }
 
