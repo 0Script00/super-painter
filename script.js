@@ -80,6 +80,24 @@ function updateColorFromHsb() {
   saturationValue.textContent = `${saturation}%`;
   brightnessValue.textContent = `${brightness}%`;
   opacityValue.textContent = `${Math.round(alpha * 100)}%`;
+  updateSliderBackgrounds();
+}
+
+function updateSliderBackgrounds() {
+  // Hue: rainbow gradient
+  const hueGradient = 'linear-gradient(90deg,' +
+    Array.from({length:7}).map((_,i)=> `hsl(${i*60},100%,50%)`).join(',') + ')';
+  hueInput.style.background = hueGradient;
+
+  // Saturation: from gray to full color at current hue
+  saturationInput.style.background = `linear-gradient(90deg, hsl(${hue},0%,50%), hsl(${hue},100%,50%))`;
+
+  // Brightness: from black to color at current saturation
+  brightnessInput.style.background = `linear-gradient(90deg, black, hsl(${hue},${saturation}%,50%))`;
+
+  // Opacity: from transparent to current color
+  const solid = hsbToRgba(hue, saturation, brightness, 1);
+  opacityInput.style.background = `linear-gradient(90deg, rgba(0,0,0,0), ${solid})`;
 }
 
 function setTool(tool) {
