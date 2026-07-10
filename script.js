@@ -157,10 +157,10 @@ function drawColorWheel() {
 
 function setWheelPointer(x, y) {
   if (!wheelPointer) return;
-  const rect = colorWheel.getBoundingClientRect();
-  wheelPointer.style.left = `${rect.left + x}px`;
-  wheelPointer.style.top = `${rect.top + y}px`;
-  wheelPointer.style.position = 'fixed';
+  // position pointer inside the wrapper (wrapper is position:relative)
+  wheelPointer.style.left = `${x}px`;
+  wheelPointer.style.top = `${y}px`;
+  wheelPointer.style.position = 'absolute';
 }
 
 function handleWheelPointer(clientX, clientY) {
@@ -192,11 +192,12 @@ if (colorWheel) {
   window.addEventListener('pointermove', e => { if (dragging) handleWheelPointer(e.clientX, e.clientY); });
   window.addEventListener('pointerup', e => { dragging = false; if (colorWheel) colorWheel.releasePointerCapture?.(e.pointerId); });
   // position pointer initially
-  const initX = (hue / 360) * colorWheel.width/1 + colorWheel.width/2 - colorWheel.width/2;
-  const angleRad = (hue - 90) * Math.PI/180;
-  const initR = (saturation/100) * (Math.min(colorWheel.width, colorWheel.height)/2 - 1);
-  const px = colorWheel.width/2 + Math.cos(angleRad) * initR;
-  const py = colorWheel.height/2 + Math.sin(angleRad) * initR;
+  const cx = colorWheel.width / 2;
+  const cy = colorWheel.height / 2;
+  const angleRad = (hue) * Math.PI / 180;
+  const initR = (saturation / 100) * (Math.min(colorWheel.width, colorWheel.height) / 2 - 1);
+  const px = cx + Math.cos(angleRad) * initR;
+  const py = cy + Math.sin(angleRad) * initR;
   setWheelPointer(px, py);
 }
 
