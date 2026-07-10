@@ -281,7 +281,7 @@ input {
 .canvas-wrapper {
   background-color: #ffffff;
   background-image: repeating-conic-gradient(
-    #0f172a 0 90deg,
+    #808080 0 90deg,
     transparent 0 180deg
   );
   background-size: 48px 48px;
