@@ -144,6 +144,15 @@
   .side-toolbar .side-tool { background: transparent; color: #fff; border: none; padding: 8px 10px; border-radius: 8px; cursor: pointer; }
   .side-toolbar .side-tool.selected { background: var(--accent); }
 
+  /* Color wheel */
+  .color-wheel-wrap { margin-top: 14px; display:flex; gap:12px; align-items:center; }
+  .color-wheel-wrap canvas { border-radius: 50%; box-shadow: 0 10px 30px rgba(15,23,42,0.08); cursor: crosshair; }
+  .wheel-pointer { position: absolute; width: 12px; height: 12px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.25); transform: translate(-50%, -50%); pointer-events: none; }
+
+  @media (max-width: 640px) {
+    .color-wheel-wrap { justify-content: center; }
+  }
+
   .canvas-wrapper { background-color: #fff; background-image: repeating-conic-gradient(#bfbfbf 0 90deg, transparent 0 180deg); background-size: 24px 24px; padding: 18px; border-radius: 6px; }
 
   #paintCanvas { display: block; width: 100%; height: auto; background: transparent; border-radius: 0; }

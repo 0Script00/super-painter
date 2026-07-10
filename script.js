@@ -100,6 +100,106 @@ function updateSliderBackgrounds() {
   opacityInput.style.background = `linear-gradient(90deg, rgba(0,0,0,0), ${solid})`;
 }
 
+// --- Color wheel implementation ---
+const colorWheel = document.getElementById('colorWheel');
+const wheelPointer = document.getElementById('wheelPointer');
+const wheelCtx = colorWheel ? colorWheel.getContext('2d') : null;
+
+function hsvToRgb(h, s, v) {
+  s /= 100; v /= 100;
+  const c = v * s;
+  const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+  const m = v - c;
+  let r = 0, g = 0, b = 0;
+  if (0 <= h && h < 60) [r,g,b]=[c,x,0];
+  else if (60 <= h && h < 120) [r,g,b]=[x,c,0];
+  else if (120 <= h && h < 180) [r,g,b]=[0,c,x];
+  else if (180 <= h && h < 240) [r,g,b]=[0,x,c];
+  else if (240 <= h && h < 300) [r,g,b]=[x,0,c];
+  else [r,g,b]=[c,0,x];
+  return [Math.round((r+m)*255), Math.round((g+m)*255), Math.round((b+m)*255)];
+}
+
+function drawColorWheel() {
+  if (!wheelCtx) return;
+  const w = colorWheel.width;
+  const h = colorWheel.height;
+  const img = wheelCtx.createImageData(w, h);
+  const cx = w / 2;
+  const cy = h / 2;
+  const radius = Math.min(cx, cy) - 1;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const dx = x - cx;
+      const dy = y - cy;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      const idx = (y * w + x) * 4;
+      if (d <= radius) {
+        let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+        if (angle < 0) angle += 360;
+        const sat = Math.round((d / radius) * 100);
+        const val = 100;
+        const [r,g,b] = hsvToRgb(angle, sat, val);
+        img.data[idx] = r;
+        img.data[idx+1] = g;
+        img.data[idx+2] = b;
+        img.data[idx+3] = 255;
+      } else {
+        img.data[idx] = 0;
+        img.data[idx+1] = 0;
+        img.data[idx+2] = 0;
+        img.data[idx+3] = 0;
+      }
+    }
+  }
+  wheelCtx.putImageData(img, 0, 0);
+}
+
+function setWheelPointer(x, y) {
+  if (!wheelPointer) return;
+  const rect = colorWheel.getBoundingClientRect();
+  wheelPointer.style.left = `${rect.left + x}px`;
+  wheelPointer.style.top = `${rect.top + y}px`;
+  wheelPointer.style.position = 'fixed';
+}
+
+function handleWheelPointer(clientX, clientY) {
+  const rect = colorWheel.getBoundingClientRect();
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  const cx = colorWheel.width / 2;
+  const cy = colorWheel.height / 2;
+  const dx = x - cx;
+  const dy = y - cy;
+  const r = Math.sqrt(dx*dx + dy*dy);
+  const radius = Math.min(cx, cy) - 1;
+  if (r > radius) return; // outside
+  let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+  if (angle < 0) angle += 360;
+  const sat = Math.round((r / radius) * 100);
+  hue = Math.round(angle);
+  saturation = sat;
+  hueInput.value = hue;
+  saturationInput.value = saturation;
+  updateColorFromHsb();
+  setWheelPointer(x, y);
+}
+
+if (colorWheel) {
+  drawColorWheel();
+  let dragging = false;
+  colorWheel.addEventListener('pointerdown', e => { dragging = true; colorWheel.setPointerCapture(e.pointerId); handleWheelPointer(e.clientX, e.clientY); });
+  window.addEventListener('pointermove', e => { if (dragging) handleWheelPointer(e.clientX, e.clientY); });
+  window.addEventListener('pointerup', e => { dragging = false; if (colorWheel) colorWheel.releasePointerCapture?.(e.pointerId); });
+  // position pointer initially
+  const initX = (hue / 360) * colorWheel.width/1 + colorWheel.width/2 - colorWheel.width/2;
+  const angleRad = (hue - 90) * Math.PI/180;
+  const initR = (saturation/100) * (Math.min(colorWheel.width, colorWheel.height)/2 - 1);
+  const px = colorWheel.width/2 + Math.cos(angleRad) * initR;
+  const py = colorWheel.height/2 + Math.sin(angleRad) * initR;
+  setWheelPointer(px, py);
+}
+
 function setTool(tool) {
   currentTool = tool;
   document.querySelectorAll('.tool-button').forEach(button => {
