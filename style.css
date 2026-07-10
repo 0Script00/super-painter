@@ -139,7 +139,7 @@ button, input { font: inherit; }
 /* Color wheel */
 .color-wheel-wrap { margin-top: 14px; display:flex; gap:12px; align-items:center; position: relative; }
 .color-wheel-wrap canvas { border-radius: 50%; box-shadow: 0 10px 30px rgba(15,23,42,0.08); cursor: crosshair; display:block; }
-.wheel-pointer { position: absolute; width: 12px; height: 12px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.25); transform: translate(-50%, -50%); pointer-events: none; }
+.wheel-pointer { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.25); transform: translate(-50%, -50%); pointer-events: none; z-index: 20; }
 
 @media (max-width: 640px) {
   .color-wheel-wrap { justify-content: center; }

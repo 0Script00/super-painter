@@ -101,9 +101,9 @@ function updateSliderBackgrounds() {
 }
 
 // --- Color wheel implementation ---
-const colorWheel = document.getElementById('colorWheel');
-const wheelPointer = document.getElementById('wheelPointer');
-const wheelCtx = colorWheel ? colorWheel.getContext('2d') : null;
+let colorWheel = null;
+let wheelPointer = null;
+let wheelCtx = null;
 
 function hsvToRgb(h, s, v) {
   s /= 100; v /= 100;
@@ -185,12 +185,24 @@ function handleWheelPointer(clientX, clientY) {
   setWheelPointer(x, y);
 }
 
-if (colorWheel) {
-  drawColorWheel();
+window.addEventListener('load', () => {
+  colorWheel = document.getElementById('colorWheel');
+  wheelPointer = document.getElementById('wheelPointer');
+  wheelCtx = colorWheel ? colorWheel.getContext('2d') : null;
+  if (!colorWheel || !wheelCtx) {
+    console.warn('Color wheel canvas not found or context unavailable');
+    return;
+  }
+  try {
+    drawColorWheel();
+  } catch (err) {
+    console.error('Failed to draw color wheel:', err);
+  }
   let dragging = false;
   colorWheel.addEventListener('pointerdown', e => { dragging = true; colorWheel.setPointerCapture(e.pointerId); handleWheelPointer(e.clientX, e.clientY); });
   window.addEventListener('pointermove', e => { if (dragging) handleWheelPointer(e.clientX, e.clientY); });
-  window.addEventListener('pointerup', e => { dragging = false; if (colorWheel) colorWheel.releasePointerCapture?.(e.pointerId); });
+  window.addEventListener('pointerup', e => { dragging = false; try { colorWheel.releasePointerCapture?.(e.pointerId); } catch(_){} });
+
   // position pointer initially
   const cx = colorWheel.width / 2;
   const cy = colorWheel.height / 2;
@@ -199,7 +211,7 @@ if (colorWheel) {
   const px = cx + Math.cos(angleRad) * initR;
   const py = cy + Math.sin(angleRad) * initR;
   setWheelPointer(px, py);
-}
+});
 
 function setTool(tool) {
   currentTool = tool;
