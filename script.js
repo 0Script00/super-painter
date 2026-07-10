@@ -87,6 +87,9 @@ function setTool(tool) {
   document.querySelectorAll('.tool-button').forEach(button => {
     button.classList.toggle('selected', button.dataset.tool === tool);
   });
+  document.querySelectorAll('.side-tool').forEach(button => {
+    button.classList.toggle('selected', button.dataset.tool === tool);
+  });
 }
 
 function preserveCanvasContent(newWidth, newHeight) {
@@ -205,6 +208,16 @@ toolGroup.addEventListener('click', event => {
   if (!button) return;
   setTool(button.dataset.tool);
 });
+
+// side-toolbar (left) interaction
+const sideToolbar = document.querySelector('.side-toolbar');
+if (sideToolbar) {
+  sideToolbar.addEventListener('click', event => {
+    const btn = event.target.closest('.side-tool');
+    if (!btn) return;
+    setTool(btn.dataset.tool);
+  });
+}
 
 brushSizeInput.addEventListener('input', event => {
   brushSize = Number(event.target.value);
